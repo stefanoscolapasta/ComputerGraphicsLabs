@@ -37,7 +37,7 @@ Colors added in together with lighting.
 After adding in shadows + direct lighting + ambient lighting
 
 ## LAB 3: RASTERIZER
-
+After building a simple raytracer, it's time to build a resterizer!
 
 
 
