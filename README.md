@@ -18,9 +18,16 @@ Time to build a Raytracer with SDL2.
 It took a while to understand it was not a mistake but simply the focal length was too small. Adjusting it made me realize what the problem was.
 <h3>Added lighting</h3>
 <p align="left">
+      <img src="./res/first_illumination_attempt.png" width="45%" >
       <img src="./res/gif_illumination.gif" width="45%" >
 </p>
 Lighting intensity with no colors nor shadows, resolution is 100x100 to make interactivity possible.
+<br/><br/><br/><br/>
+<p align="left">
+      <img src="./res/illumination_no_shadows.png" width="45%">
+      <img src="./res/gif_illumination_and_colors.gif" width="45%">
+</p>
+Colors added in together with lighting.
 <br/><br/><br/><br/>
 <p align="left">
       <img src="./res/illumination_no_shadows.png" width="45%">
