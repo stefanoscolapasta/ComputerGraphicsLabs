@@ -30,9 +30,11 @@ Lighting intensity with no colors nor shadows, resolution is 100x100 to make int
 Colors added in together with lighting.
 <br/><br/><br/><br/>
 <p align="left">
-      <img src="./res/illumination_no_shadows.png" width="45%">
-      <img src="./res/gif_illumination_and_colors.gif" width="45%">
+      <img src="./res/final.png" width="45%">
+      <img src="./res/finalGif.gif" width="45%">
 </p>
+After adding in shadows + direct lighting + ambient lighting
+
 
 
 
