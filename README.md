@@ -35,6 +35,7 @@ Colors added in together with lighting.
       <img src="./res/finalGif.gif" width="45%">
 </p>
 After adding in shadows + direct lighting + ambient lighting
+
 ## LAB 3: RASTERIZER
 
 
