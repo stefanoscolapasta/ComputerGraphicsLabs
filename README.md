@@ -13,7 +13,7 @@ Time to build a Raytracer with SDL2.
 <p align="left">
       <img src="./res/lab2Error_but_it_was_focal_length_lol.png" width="33%" >
       <img src="./res/lab2_understood_error.png" width="33%">
-      <img src="./res/illumination_no_shadows.png" width="33%">
+      <img src="./res/no_lighting.png" width="33%">
 </p>
 It took a while to understand it was not a mistake but simply the focal length was too small. Adjusting it made me realize what the problem was.
 <h3>Added lighting</h3>
