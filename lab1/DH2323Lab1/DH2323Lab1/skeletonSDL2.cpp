@@ -20,7 +20,7 @@ using glm::vec3;
 // GLOBAL VARIABLES
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-const float ASPECT_RATIO = (float)SCREEN_WIDTH / SCREEN_WIDTH;
+const float ASPECT_RATIO = (float)((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT); //THE DAMN PROBLEM WAS HERE, the aspect ration was casted to int and fk the calculation
 vec3 topLeft(1, 0, 0); // red
 vec3 topRight(0, 0, 1); // blue
 vec3 bottomLeft(1, 1, 0); // yellow
@@ -67,11 +67,15 @@ void Update();
 //}
 
 inline float rad2deg(float rad) {
-	return rad * 180.0 / pi;
+	return rad * (float)(180.0f / pi);
+}
+
+inline float deg2rad(float deg) {
+	return deg * (float)(pi / 180.0f);
 }
 
 inline float HFOVfromVFOV(float VFOV) {
-	return rad2deg(2 * atan(tan(VFOV / 2) * ASPECT_RATIO));
+	return rad2deg(atan(tan(deg2rad(VFOV) * 0.5f) * ASPECT_RATIO) * 2.0f);
 }
 
 inline float randomWithRange(float a, float b) {
@@ -83,8 +87,10 @@ int main(int argc, char* argv[])
 {
 	sdlAux = new SDL2Aux(SCREEN_WIDTH, SCREEN_HEIGHT);
 	
-	
-	cout << "Resulting HFOV: " << HFOVfromVFOV(90);
+	float resulting_angle = HFOVfromVFOV(90.0); //result is 106 degrees
+
+	cout << "Resulting HFOV: " << resulting_angle;
+
 	for (auto& star : stars) {
 		star = vec3(randomWithRange(-1, 1), randomWithRange(-1, 1), randomWithRange(0.001, 1));
 	}
