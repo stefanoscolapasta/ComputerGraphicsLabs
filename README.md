@@ -16,6 +16,7 @@ Time to build a Raytracer with SDL2.
       <img src="./res/no_lighting.png" width="32%">
 </p>
 It took a while to understand it was not a mistake but simply the focal length was too small. Adjusting it made me realize what the problem was.
+<br/><br/><br/><br/>
 <h3>Added lighting</h3>
 <p align="left">
       <img src="./res/first_illumination_attempt.png" width="45%" >
