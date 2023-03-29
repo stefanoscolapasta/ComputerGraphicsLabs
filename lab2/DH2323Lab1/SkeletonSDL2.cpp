@@ -156,7 +156,7 @@ void Draw()
 				vec3 surfaceColor = triangles[rayTriangleIntersection.triangleindex].color;
 				vec3 directLight = DirectLight(rayTriangleIntersection);
 				vec3 directAndAmbient = directLight + ambientLight;
-				sdlAux->putPixel(x, y, surfaceColor * directAndAmbient);
+				sdlAux->putPixel(x, y, surfaceColor );
 			}
 			else {
 				sdlAux->putPixel(x, y, vec3(0, 0, 0)); //black
