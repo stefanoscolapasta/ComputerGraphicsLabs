@@ -1,12 +1,12 @@
 # Computer Graphics Labs
 This repo serves me the sole purpose to track my work on the labs.
 
-## LAB 1
+## LAB 1: SDL 
 Getting to know SDL2.
 <br/><br/>
 ![](./res/starfield.gif)
 <br/><br/>
-## LAB 2
+## LAB 2: RAYTRACER
 Time to build a Raytracer with SDL2.
 <br/><br/>
 <h3>Initial attempts</h3>
@@ -35,7 +35,7 @@ Colors added in together with lighting.
       <img src="./res/finalGif.gif" width="45%">
 </p>
 After adding in shadows + direct lighting + ambient lighting
-
+## LAB 3: RASTERIZER
 
 
 
