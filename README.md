@@ -22,8 +22,8 @@ It took a while to understand it was not a mistake but simply the focal length w
 Lighting intensity with no colors nor shadows, resolution is 100x100 to make interactivity possible.
 <br/><br/>
 <p align="left">
-      <img src="./res/illumination_no_shadows.png" width="45%">
-      <img src="./res/git_illumination_and_colors.png" width="45%">
+      <img src="./res/illination_no_shadows.png" width="45%">
+      <img src="./res/git_illumination_and_colors.gif" width="45%">
 </p>
 
 
