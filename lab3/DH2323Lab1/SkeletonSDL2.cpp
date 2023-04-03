@@ -26,14 +26,15 @@ struct Pixel {
 	int x;
 	int y;
 	float zinv;
-	vec3 illumination;
+	//vec3 illumination; used in the per-vertex illumination
+	vec3 pos3d;
 };
 
 struct Vertex
 {
 	vec3 position;
-	vec3 normal;
-	vec3 reflectance;
+	//vec3 normal;
+	//vec3 reflectance;
 };
 
 // CAMERA STUFF
@@ -48,7 +49,8 @@ vec3 currentColor;
 vec3 lightPos(0, -0.5, -0.7);
 vec3 lightPower = 15.0f * vec3(1, 1, 1);
 vec3 indirectLightPowerPerArea = 0.5f * vec3(1, 1, 1);
-
+vec3 currentNormal;
+vec3 currentReflectance;
 // ----------------------------------------------------------------------------
 // FUNCTIONS
 
@@ -120,17 +122,17 @@ void Update()
 		if( keysArray[SDL_SCANCODE_RCTRL] )
 			;
 
-		if( keysArray[SDL_SCANCODE_W] )
-			;
+		if (keysArray[SDL_SCANCODE_W])
+			lightPos.z += 0.05f;
 
 		if( keysArray[SDL_SCANCODE_S] )
-			;
+			lightPos.z -= 0.05f;
 
 		if( keysArray[SDL_SCANCODE_D] )
-			;
+			lightPos.x += 0.05f;
 
 		if( keysArray[SDL_SCANCODE_A] )
-			;
+			lightPos.x -= 0.05f;
 
 		if( keysArray[SDL_SCANCODE_E] )
 			;
@@ -153,15 +155,18 @@ void Draw()
 	for (int i = 0; i < triangles.size(); ++i)
 	{
 		currentColor = triangles[i].color;
+		currentNormal = triangles[i].normal;
+		currentReflectance = triangles[i].color;
+
 		vector<Vertex> vertices(3);
 		vertices[0].position = triangles[i].v0;
 		vertices[1].position = triangles[i].v1;
 		vertices[2].position = triangles[i].v2;
 
-		for (Vertex& vert : vertices) {
+		/*for (Vertex& vert : vertices) {
 			vert.normal = triangles[i].normal;
 			vert.reflectance = triangles[i].color;
-		}
+		}*/
 
 		DrawPolygon(vertices);
 	}
@@ -174,13 +179,13 @@ void VertexShader(const Vertex& v, Pixel & p) {
 	p.zinv = 1.0f / v_in_camera_coordinate_system.z;
 	p.x = (focal_length * v_in_camera_coordinate_system.x * p.zinv) + (SCREEN_WIDTH / 2);
 	p.y = (focal_length * v_in_camera_coordinate_system.y * p.zinv) + (SCREEN_HEIGHT / 2);
-
-	float radius = glm::length(v.position - lightPos);
+	p.pos3d = v.position;
+	/*float radius = glm::length(v.position - lightPos);
 
 	float area = 4 * M_PI * (radius * radius);
 	vec3 directLighting = lightPower * SDL_max(glm::dot(glm::normalize(v.normal), glm::normalize(lightPos -  v.position)), 0.0f) / area;
 	vec3 indirectLighting = indirectLightPowerPerArea;
-	p.illumination = v.reflectance * (directLighting + indirectLighting);
+	p.illumination = v.reflectance * (directLighting + indirectLighting);*/
 }
 
 void PixelShader(const Pixel& p) {
@@ -188,8 +193,14 @@ void PixelShader(const Pixel& p) {
 	int y = p.y;
 	if (p.zinv > depthBuffer[y][x])
 	{
-		depthBuffer[y][x] = p.zinv;
-		sdlAux->putPixel(x, y, p.illumination);
+		depthBuffer[y][x] = p.zinv; //corrected f. to p.
+		float r = glm::length(p.pos3d - lightPos);
+		vec3 specialr = glm::normalize(lightPos - p.pos3d); //vector for shadowray (?) direction from surface -> light //p.pos3d = v.position
+		vec3 normal = currentNormal;
+		float inner = glm::dot(normal, specialr);
+		vec3 D = lightPower * SDL_max(inner, 0) / (float)(4 * M_PI * r * r);
+		vec3 currentLight = currentReflectance * (D + indirectLightPowerPerArea);
+		sdlAux->putPixel(x, y, currentLight); /* * currentColor*/
 	}
 }
 
@@ -200,7 +211,11 @@ void Interpolate(Pixel a, Pixel b, vector<Pixel>& result)
 	float xStep = (b.x - a.x) / maxV;
 	float yStep = (b.y - a.y) / maxV;
 	float zStep = (b.zinv - a.zinv) / maxV;
-	vec3 lightStep = (b.illumination - a.illumination) / maxV;
+	//vec3 lightStep = (b.illumination - a.illumination) / maxV; no need to interpolate this anymore
+	b.pos3d *= b.zinv;
+	a.pos3d *= a.zinv;
+	//Hints suggest to interpolate p/z linearly
+	vec3 step3d = (b.pos3d - a.pos3d) / maxV;
 
 	Pixel current(a);
 	for (int i = 0; i < N; ++i)
@@ -208,8 +223,9 @@ void Interpolate(Pixel a, Pixel b, vector<Pixel>& result)
 		current.x = a.x + i * xStep;
 		current.y = a.y + i * yStep;
 		current.zinv = a.zinv + i * zStep;
-		current.illumination += lightStep;
-
+		//current.illumination += lightStep; no need to interpolate this anymore
+		current.pos3d = a.pos3d + (float)i * step3d;
+		current.pos3d = (current.pos3d / current.zinv); //Other Hint: and once interpolated linearly p/z, restore value
 		result[i] = current;
 	}
 }
@@ -320,12 +336,14 @@ void ComputePolygonRows(const vector<Pixel>& vertexPixels, vector<Pixel>& leftPi
 			if (pixel.x < leftPixels[i].x) {
 				leftPixels[i].x = pixel.x;
 				leftPixels[i].zinv = pixel.zinv;
-				leftPixels[i].illumination = pixel.illumination;
+				//leftPixels[i].illumination = pixel.illumination;
+				leftPixels[i].pos3d = pixel.pos3d;
 			}
 			if (pixel.x >= rightPixels[i].x) {
 				rightPixels[i].x = pixel.x;
 				rightPixels[i].zinv = pixel.zinv;
-				rightPixels[i].illumination = pixel.illumination;
+				//rightPixels[i].illumination = pixel.illumination;
+				rightPixels[i].pos3d = pixel.pos3d;
 			}
 		}
 
