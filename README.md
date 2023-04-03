@@ -58,3 +58,8 @@ Lighting is calculated per vertex, and then values are interpolated along the po
 </p>
 In this case, no interpolation is performed for the lighting, but pixel positions are interpolated. Lighting is then calculated for each pixel, making the final result more accurate.
 
+## Camera Movement + Light Source Movement
+<p align="left">
+      <img src="./res/lab3_imgs/gif_per_vertex_illumination.gif" width="45%">
+       <img src="./res/lab3_imgs/final_gif_wrong_3dpos_interpolation.gif" width="45%">
+</p>
