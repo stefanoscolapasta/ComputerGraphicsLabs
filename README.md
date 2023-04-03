@@ -44,12 +44,14 @@ After building a simple raytracer, it's time to build a resterizer!
       <img src="./res/lab2_imgs/colors_rasterized_no_depth_yet.png" width="45%">
 </p>
 First, projection was implemented, while also drawing lines between these projected points. Then color is added by drawing lines from one side to the other of each triangle (polygon). Z-buffer not yet implemented.
+
 ### Per vertex illumination
 <p align="left">
       <img src="./res/lab3_imgs/correct_lighting_per_vertex.png" width="45%">
 
 </p>
 Lighting is calculated per vertex, and then values are interpolated along the polygon.
+
 ### Per pixel illumination
 <p align="left">
        <img src="./res/lab2_imgs/per_pixel_right_pos_2d_interp.png" width="45%">
