@@ -50,7 +50,7 @@ First, projection was implemented, while also drawing lines between these projec
       <img src="./res/lab3_imgs/correct_lighting_per_vertex.png" width="45%">
 
 </p>
-Lighting is calculated per vertex, and then values are interpolated along the polygon.
+Lighting is calculated per vertex, and then values are interpolated along the polygon. Z-buffer was also implemented to account for depth.
 
 ### Per pixel illumination
 <p align="left">
