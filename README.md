@@ -58,7 +58,7 @@ Lighting is calculated per vertex, and then values are interpolated along the po
        <img src="./res/lab3_imgs/per_pixel_wrong_pos_2d_interp.png" width="45%">
        <img src="./res/lab3_imgs/per_pixel_right_pos_2d_interp.png" width="45%">
 </p>
-Maybe not immediately noticeable, but looking closely, lighting effect is a bit skewed.
+Maybe not immediately noticeable, but looking closely, lighting effect is a bit skewed in the left image.
 <br/>
 The second image does not have the skew effect because perspective correct
 interpolation was used for the 3D position of the pixels.
