@@ -158,12 +158,10 @@ void Draw()
 		vertices[1].position = triangles[i].v1;
 		vertices[2].position = triangles[i].v2;
 
-		vertices[0].normal = triangles[i].normal;
-		vertices[0].reflectance = vec3(1.f, 1.f, 1.f);
-		vertices[1].normal = triangles[i].normal;
-		vertices[1].reflectance = vec3(1.f, 1.f, 1.f);
-		vertices[2].normal = triangles[i].normal;
-		vertices[2].reflectance = vec3(1.f, 1.f, 1.f);
+		for (Vertex& vert : vertices) {
+			vert.normal = triangles[i].normal;
+			vert.reflectance = triangles[i].color;
+		}
 
 		DrawPolygon(vertices);
 	}
@@ -182,7 +180,7 @@ void VertexShader(const Vertex& v, Pixel & p) {
 	float area = 4 * M_PI * (radius * radius);
 	vec3 directLighting = lightPower * SDL_max(glm::dot(glm::normalize(v.normal), glm::normalize(lightPos -  v.position)), 0.0f) / area;
 	vec3 indirectLighting = indirectLightPowerPerArea;
-	p.illumination = currentColor * (directLighting + indirectLighting);
+	p.illumination = v.reflectance * (directLighting + indirectLighting);
 }
 
 void PixelShader(const Pixel& p) {
