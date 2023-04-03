@@ -107,12 +107,12 @@ void Update()
 		}
 
 		if (keysArray[SDL_SCANCODE_RIGHT]) {
-			yaw -= 0.01f;
+			yaw += 0.01f;
 			UpdateCameraRotation(yaw);
 		}
 
 		if (keysArray[SDL_SCANCODE_LEFT]) {
-			yaw += 0.01f;
+			yaw -= 0.01f;
 			UpdateCameraRotation(yaw);
 		}
 
@@ -193,13 +193,15 @@ void PixelShader(const Pixel& p) {
 	int y = p.y;
 	if (p.zinv > depthBuffer[y][x])
 	{
-		depthBuffer[y][x] = p.zinv; //corrected f. to p.
-		float r = glm::length(p.pos3d - lightPos);
-		vec3 specialr = glm::normalize(lightPos - p.pos3d); //vector for shadowray (?) direction from surface -> light //p.pos3d = v.position
-		vec3 normal = currentNormal;
-		float inner = glm::dot(normal, specialr);
-		vec3 D = lightPower * SDL_max(inner, 0) / (float)(4 * M_PI * r * r);
-		vec3 currentLight = currentReflectance * (D + indirectLightPowerPerArea);
+		depthBuffer[y][x] = p.zinv; 
+		float radius = glm::length(p.pos3d - lightPos);
+		float area = (4 * M_PI * radius * radius);
+
+		float inner = glm::dot(glm::normalize(currentNormal), glm::normalize(lightPos - p.pos3d));
+
+		vec3 directLight = lightPower * SDL_max(inner, 0) / area;
+		vec3 currentLight = currentReflectance * (directLight + indirectLightPowerPerArea);
+
 		sdlAux->putPixel(x, y, currentLight); /* * currentColor*/
 	}
 }
@@ -225,7 +227,7 @@ void Interpolate(Pixel a, Pixel b, vector<Pixel>& result)
 		current.zinv = a.zinv + i * zStep;
 		//current.illumination += lightStep; no need to interpolate this anymore
 		current.pos3d = a.pos3d + (float)i * step3d;
-		current.pos3d = (current.pos3d / current.zinv); //Other Hint: and once interpolated linearly p/z, restore value
+		current.pos3d = (current.pos3d / current.zinv); //Other Hint: "and once interpolated linearly p/z, restore value"
 		result[i] = current;
 	}
 }
