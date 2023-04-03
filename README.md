@@ -56,5 +56,5 @@ Lighting is calculated per vertex, and then values are interpolated along the po
 <p align="left">
        <img src="./res/lab3_imgs/per_pixel_right_pos_2d_interp.png" width="45%">
 </p>
-     
+In this case, no interpolation is performed for the lighting, but pixel positions are interpolated. Lighting is then calculated for each pixel, making the final result more accurate.
 
