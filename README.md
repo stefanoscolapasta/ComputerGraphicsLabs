@@ -62,11 +62,8 @@ Maybe not immediately noticeable, but looking closely, lighting effect is a bit 
 <br/>
 The second image does not have the skew effect because perspective correct
 interpolation was used for the 3D position of the pixels.
-<br/><br/><br/><br/>
-<p align="left">
-       <img src="./res/lab3_imgs/per_pixel_right_pos_2d_interp.png" width="45%">
-</p>
-In this case, no interpolation is performed for the lighting, but pixel positions are interpolated. Lighting is then calculated for each pixel, making the final result more accurate.
+Apart from this, in both cases, no interpolation is performed for the lighting, but pixel positions are interpolated instead.
+<br/>Lighting is then calculated for each pixel, making the final result more accurate.
 
 ## Camera Movement + Light Source Movement
 <p align="left">
